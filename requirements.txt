@@ -1,0 +1,21 @@
+# TEST
+nose
+coverage
+# LINT OR DIE
+flake8
+pep8
+pyflakes
+# LIBS
+numpy
+scipy
+pandas
+pyspark
+patsy
+# DOCUMENTATION
+sphinx
+sphinx_rtd_theme
+sphinxcontrib-bibtex
+sphinxcontrib-blockdiag
+# PUBLISHING
+twine
+setuptools
