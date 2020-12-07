@@ -3,7 +3,7 @@ import random
 import numpy as np
 from nose import with_setup
 
-from pyspf.formula import TermEnum
+from pyspf.formula import TermEnum, InteractionExtractor
 
 
 def setup():
@@ -134,4 +134,56 @@ def test_function_extractions():
         lhs = extractor.value
         rhs = expected[i]
         # print(f'{extractor._term}: {lhs}')
+        assert lhs == rhs
+
+
+@with_setup(setup, teardown)
+def test_interaction_extractions():
+    """
+    Tests extractions of functions on continuous variables.
+
+    :return: None.
+    """
+    record = {
+        'x1': 20.0,
+        'x2': 5.0,
+        'a': 'left',
+        'b': 'mid'
+    }
+    terms = [
+        'Intercept',
+        'x1',
+        'x2',
+        'x1:x2:a[left]',
+        'x1:x2:a[right]',
+        'x1:x2:b[T.low]',
+        'x1:x2:b[T.mid]',
+        'a[T.right]:b[T.low]', 'a[T.right]:b[T.mid]',
+        'a[T.left]:b[T.mid]', 'a[T.left]:b[T.high]',
+        "x1:x2:C(a, levels=profile['a'])[left]", "x1:x2:C(a, levels=profile['a'])[right]",
+        "x1:x2:C(b, levels=profile['b'])[T.mid]", "x1:x2:C(b, levels=profile['b'])[T.high]",
+        "np.abs(x1):a[T.left]"
+    ]
+    expected = [
+        1.0,
+        20.0,
+        5.0,
+        100.0,
+        0.0,
+        0.0,
+        100.0,
+        0.0, 0.0,
+        1.0, 0.0,
+        100.0,
+        0.0,
+        100.0,
+        0.0,
+        20.0
+    ]
+
+    for i, term in enumerate(terms):
+        extractor = InteractionExtractor(record, term)
+        lhs = extractor.value
+        rhs = expected[i]
+        # print(f'{extractor._terms}: {lhs}')
         assert lhs == rhs

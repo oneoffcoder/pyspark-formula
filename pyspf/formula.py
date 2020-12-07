@@ -212,9 +212,9 @@ class FunExtractor(Extractor):
         return eval(expression)
 
 
-class CompoundExtractor(object):
+class InteractionExtractor(object):
     """
-    Compound extractor for interaction effects.
+    Interaction extractor for interaction effects.
     """
 
     def __init__(self, record, terms):
@@ -222,9 +222,10 @@ class CompoundExtractor(object):
         ctor.
 
         :param record: Dictionary.
-        :param term: Model term (possibly with interaction effects).
+        :param terms: Model term (possibly with interaction effects).
         :return: None.
         """
+        self._terms = terms
         extractors = [TermEnum.get_extractor(record, term) for term in terms.split(':')]
         values = [e.value for e in extractors]
         values = [v for v in values if pd.notna(v)]
@@ -233,6 +234,9 @@ class CompoundExtractor(object):
             self.__value = None
         else:
             self.__value = reduce(lambda a, b: a * b, values)
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}[terms={self._terms}]'
 
     @property
     def value(self):
