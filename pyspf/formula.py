@@ -209,7 +209,11 @@ class FunExtractor(Extractor):
 
         if 'np.' in expression:
             np = importlib.import_module('numpy')
-        return eval(expression)
+        v = eval(expression)
+
+        if isinstance(v, np.generic):
+            v = np.asscalar(v)
+        return v
 
 
 class InteractionExtractor(object):

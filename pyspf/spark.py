@@ -1,7 +1,11 @@
+import importlib
 from itertools import product
 
 import pandas as pd
 from patsy.highlevel import dmatrices
+from pyspark import Row
+
+from pyspf.formula import InteractionExtractor
 
 
 def get_profile(sdf):
@@ -28,6 +32,7 @@ def get_profile(sdf):
     return all_types
 
 
+# flake8: noqa: F841
 def get_columns(formula, sdf, profile=None):
     """
     Gets the expanded columns of the specified Spark dataframe using the specified formula.
@@ -43,11 +48,41 @@ def get_columns(formula, sdf, profile=None):
     data = product(*(v for _, v in profile.items()))
     columns = [k for k, _ in profile.items()]
     df = pd.DataFrame(data, columns=columns)
+
+    if 'np.' in formula:
+        np = importlib.import_module('numpy')
     y, X = dmatrices(formula, df, return_type='dataframe')
 
     return list(y), list(X)
 
 
+def __smatrices(columns, sdf):
+    """
+    Constructs new Spark dataframe based on columns.
+
+    :param columns: Columns generated from patsy.
+    :param sdf: Spark dataframe.
+    :return: Spark dataframe.
+    """
+    def to_record(record):
+        return Row(**{term: InteractionExtractor(record, term).value for term in columns})
+
+    return sdf.rdd \
+        .map(lambda r: to_record(r.asDict())) \
+        .toDF()
+
+
 def smatrices(formula, sdf, profile=None):
-    # columns = get_columns(formula, sdf, profile=profile)
-    raise NotImplementedError()
+    """
+    Gets tuple of design/model matrices.
+
+    :param formula: Formula.
+    :param sdf: Spark dataframe.
+    :param profile: Dictionary of data profile.
+    :return: y, X Spark dataframes.
+    """
+    y_cols, X_cols = get_columns(formula, sdf, profile=profile)
+    X = __smatrices(X_cols, sdf)
+    y = __smatrices(y_cols, sdf)
+
+    return y, X

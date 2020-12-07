@@ -6,7 +6,7 @@ from itertools import product
 import pandas as pd
 from pyspark.sql import SparkSession
 
-from pyspf.spark import get_profile, get_columns
+from pyspf.spark import get_profile, get_columns, smatrices
 
 
 class PySparkTest(unittest.TestCase):
@@ -307,3 +307,201 @@ class SparkTest(PySparkTest):
 
             for x in X_observed:
                 assert x in X_expected
+
+    def test_smatrices_simple(self):
+        """
+        Test simple smatrices.
+
+        :return: None.
+        """
+        f = 'y ~ x1 + x2 + a + b'
+        sdf = self._get_sdf()
+        e_rows = sdf.count()
+
+        y_expected = ['y']
+        X_expected = ['Intercept', 'a[T.right]', 'b[T.low]', 'b[T.mid]', 'x1', 'x2']
+
+        y, X = smatrices(f, sdf)
+        y, X = y.toPandas(), X.toPandas()
+
+        y_observed = list(y.columns)
+        X_observed = list(X.columns)
+
+        # print(y_observed)
+        # print('~' * 15)
+        # print(y)
+        # print('=' * 15)
+        #
+        # print(X_observed)
+        # print('~' * 20)
+        # print(X)
+
+        assert e_rows == y.shape[0]
+        assert e_rows == X.shape[0]
+        assert len(y_expected) == len(y_observed)
+        assert len(X_expected) == len(X_observed)
+
+        for v in y_expected:
+            assert v in y_observed
+        for v in X_expected:
+            assert v in X_observed
+
+    def test_smatrices_simple_drop_intercept(self):
+        """
+        Test simple smatrices dropping intercept. Note that dropping intercept creates a
+        situation where the one-hot encoded variables are not dropped! Bug with patsy?
+
+        :return: None.
+        """
+        f = 'y ~ x1 + x2 + a + b - 1'
+        sdf = self._get_sdf()
+        e_rows = sdf.count()
+
+        y_expected = ['y']
+        X_expected = ['a[left]', 'a[right]', 'b[T.low]', 'b[T.mid]', 'x1', 'x2']
+
+        y, X = smatrices(f, sdf)
+        y, X = y.toPandas(), X.toPandas()
+
+        y_observed = list(y.columns)
+        X_observed = list(X.columns)
+
+        # print(y_observed)
+        # print('~' * 15)
+        # print(y)
+        # print('=' * 15)
+        #
+        # print(X_observed)
+        # print('~' * 20)
+        # print(X)
+
+        assert e_rows == y.shape[0]
+        assert e_rows == X.shape[0]
+        assert len(y_expected) == len(y_observed)
+        assert len(X_expected) == len(X_observed)
+
+        for v in y_expected:
+            assert v in y_observed
+        for v in X_expected:
+            assert v in X_observed
+
+    def test_smatrices_two_way(self):
+        """
+        Test smatrices with two-way interaction.
+
+        :return: None.
+        """
+        f = 'y ~ (x1 + x2 + a + b)**2'
+        sdf = self._get_sdf()
+        e_rows = sdf.count()
+
+        y_expected = ['y']
+        X_expected = ['Intercept', 'a[T.right]', 'b[T.low]', 'b[T.mid]', 'a[T.right]:b[T.low]',
+                      'a[T.right]:b[T.mid]', 'x1', 'x1:a[T.right]', 'x1:b[T.low]', 'x1:b[T.mid]',
+                      'x2', 'x2:a[T.right]', 'x2:b[T.low]', 'x2:b[T.mid]', 'x1:x2']
+
+        y, X = smatrices(f, sdf)
+        y, X = y.toPandas(), X.toPandas()
+
+        y_observed = list(y.columns)
+        X_observed = list(X.columns)
+
+        # print(y_observed)
+        # print('~' * 15)
+        # print(y)
+        # print('=' * 15)
+        #
+        # print(X_observed)
+        # print('~' * 20)
+        # print(X)
+
+        assert e_rows == y.shape[0]
+        assert e_rows == X.shape[0]
+        assert len(y_expected) == len(y_observed)
+        assert len(X_expected) == len(X_observed)
+
+        for v in y_expected:
+            assert v in y_observed
+        for v in X_expected:
+            assert v in X_observed
+
+    def test_smatrices_three_way(self):
+        """
+        Test smatrices with three-way interaction.
+
+        :return: None.
+        """
+        f = 'y ~ (x1 + x2 + a + b)**3'
+        sdf = self._get_sdf()
+        e_rows = sdf.count()
+
+        y_expected = ['y']
+        X_expected = ['Intercept', 'a[T.right]', 'b[T.low]', 'b[T.mid]', 'a[T.right]:b[T.low]',
+                      'a[T.right]:b[T.mid]', 'x1', 'x1:a[T.right]', 'x1:b[T.low]', 'x1:b[T.mid]',
+                      'x1:a[T.right]:b[T.low]', 'x1:a[T.right]:b[T.mid]', 'x2', 'x2:a[T.right]',
+                      'x2:b[T.low]', 'x2:b[T.mid]', 'x2:a[T.right]:b[T.low]', 'x2:a[T.right]:b[T.mid]',
+                      'x1:x2', 'x1:x2:a[T.right]', 'x1:x2:b[T.low]', 'x1:x2:b[T.mid]']
+
+        y, X = smatrices(f, sdf)
+        y, X = y.toPandas(), X.toPandas()
+
+        y_observed = list(y.columns)
+        X_observed = list(X.columns)
+
+        # print(y_observed)
+        # print('~' * 15)
+        # print(y)
+        # print('=' * 15)
+        #
+        # print(X_observed)
+        # print('~' * 20)
+        # print(X)
+
+        assert e_rows == y.shape[0]
+        assert e_rows == X.shape[0]
+        assert len(y_expected) == len(y_observed)
+        assert len(X_expected) == len(X_observed)
+
+        for v in y_expected:
+            assert v in y_observed
+        for v in X_expected:
+            assert v in X_observed
+
+    def test_smatrices_weird(self):
+        """
+        Test smatrices with weird interactions.
+
+        :return: None.
+        """
+        f = 'np.sin(y) + y ~ np.abs(x1) + (x2 + a)**2 + (np.cos(x2) + b)**2'
+        sdf = self._get_sdf()
+        e_rows = sdf.count()
+
+        y_expected = ['np.sin(y)', 'y']
+        X_expected = ['Intercept', 'a[T.right]', 'b[T.low]', 'b[T.mid]', 'np.abs(x1)', 'x2',
+                      'x2:a[T.right]', 'np.cos(x2)', 'np.cos(x2):b[T.low]', 'np.cos(x2):b[T.mid]']
+
+        y, X = smatrices(f, sdf)
+        y, X = y.toPandas(), X.toPandas()
+
+        y_observed = list(y.columns)
+        X_observed = list(X.columns)
+
+        # print(y_observed)
+        # print('~' * 15)
+        # print(y)
+        # print('=' * 15)
+        #
+        # print(X_observed)
+        # print('~' * 20)
+        # print(X)
+
+        assert e_rows == y.shape[0]
+        assert e_rows == X.shape[0]
+        assert len(y_expected) == len(y_observed)
+        assert len(X_expected) == len(X_observed)
+
+        for v in y_expected:
+            assert v in y_observed
+        for v in X_expected:
+            assert v in X_observed
