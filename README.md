@@ -2,8 +2,8 @@
 
 R-like formulas for Spark Dataframes.
 
-- [Documentation](https://pyspark-formula.readthedocs.io/)
-- [PyPi](https://pypi.org/project/pyspark-formula/) 
+- [Documentation](https://pyspafo.readthedocs.io/)
+- [PyPi](https://pypi.org/project/pyspafo/) 
 
 # Software Copyright
 
