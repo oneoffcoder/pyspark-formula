@@ -182,9 +182,9 @@ class SparkTest(PySparkTest):
         for x in X_observed:
             assert x in X_expected
 
-    def test_get_columns_variety(self):
+    def test_get_columns_variety_with_profile(self):
         """
-        Tests a variety of formulas.
+        Tests a variety of formulas with profile.
 
         :return: None.
         """
