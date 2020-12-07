@@ -204,7 +204,7 @@ class SparkTest(PySparkTest):
                    'x2': [1.0],
                    'y': [1.0]}
 
-        y_expecteds = [
+        y = [
             ['y'],
             ['y'],
             ['y'],
@@ -212,7 +212,7 @@ class SparkTest(PySparkTest):
             ['y'],
             ['y']
         ]
-        X_expecteds = [
+        X = [
             ['Intercept', "C(a, levels=profile['a'])[T.right]", "C(b, levels=profile['b'])[T.mid]",
              "C(b, levels=profile['b'])[T.high]", 'x1', 'x2'],
             ['Intercept', "C(a, levels=profile['a'])[T.right]", "C(b, levels=profile['b'])[T.mid]",
@@ -236,7 +236,7 @@ class SparkTest(PySparkTest):
 
         for i, formula in enumerate(formulas):
             y_observed, X_observed = get_columns(formula, sdf, profile=profile)
-            y_expected, X_expected = y_expecteds[i], X_expecteds[i]
+            y_expected, X_expected = y[i], X[i]
 
             # print(f'{i}: {formula}')
             # print(y_observed)
