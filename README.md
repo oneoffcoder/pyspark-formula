@@ -4,6 +4,7 @@ R-like formulas for Spark Dataframes.
 
 - [Documentation](https://pyspafo.readthedocs.io/)
 - [PyPi](https://pypi.org/project/pyspafo/) 
+- [Gitter](https://gitter.im/dataflava/pyspafo)
 
 # Software Copyright
 
