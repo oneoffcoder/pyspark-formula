@@ -30,6 +30,12 @@ A Python API to produce PySpark dataframe models from R-like formula expressions
 
    zzz-bib
 
+.. toctree::
+   :maxdepth: 2
+   :caption: API Documentation
+
+   modules
+
 
 
 Indices and tables
