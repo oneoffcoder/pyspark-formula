@@ -58,3 +58,80 @@ def test_get_extractor():
         rhs = extractor._type
         # print(extractor)
         assert lhs == rhs
+
+
+@with_setup(setup, teardown)
+def test_basic_extractions():
+    """
+    Tests basic extractions.
+
+    :return: None.
+    """
+    record = {
+        'x1': 20.0,
+        'x2': 5.0,
+        'a': 'left',
+        'b': 'mid'
+    }
+    terms = [
+        'Intercept',
+        "C(a, levels=profile['a'])[T.left]",
+        "C(a, levels=profile['a'])[T.right]",
+        "C(b, levels=profile['b'])[T.low]",
+        "C(b, levels=profile['b'])[T.mid]",
+        "C(b, levels=profile['b'])[T.high]",
+        'x1',
+        'x2',
+        'a[left]', 'a[right]',
+        'a[T.left]', 'a[T.right]',
+        'b[low]', 'b[mid]', 'b[high]',
+        'b[T.low]', 'b[T.mid]', 'b[T.high]'
+    ]
+    expected = [
+        1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 20.0, 5.0,
+        1.0, 0.0,
+        1.0, 0.0,
+        0.0, 1.0, 0.0,
+        0.0, 1.0, 0.0
+    ]
+
+    for i, term in enumerate(terms):
+        extractor = TermEnum.get_extractor(record, term)
+        lhs = extractor.value
+        rhs = expected[i]
+        # print(f'{extractor._term}: {lhs}')
+        assert lhs == rhs
+
+
+@with_setup(setup, teardown)
+def test_function_extractions():
+    """
+    Tests extractions of functions on continuous variables.
+
+    :return: None.
+    """
+    record = {
+        'x1': 20.0,
+        'x2': 5.0
+    }
+    terms = [
+        'x1',
+        'x2',
+        'np.abs(x1)',
+        'np.log(x1)',
+        'np.sin(x1)',
+        'np.log(np.sin(x1))'
+    ]
+    expected = [
+        20.0, 5.0, 20.0,
+        2.995732273553991,
+        0.9129452507276277,
+        -0.09107936652955065
+    ]
+
+    for i, term in enumerate(terms):
+        extractor = TermEnum.get_extractor(record, term)
+        lhs = extractor.value
+        rhs = expected[i]
+        # print(f'{extractor._term}: {lhs}')
+        assert lhs == rhs

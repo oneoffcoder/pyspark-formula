@@ -1,3 +1,4 @@
+import importlib
 from abc import ABC, abstractmethod
 from enum import IntEnum
 from functools import reduce
@@ -88,6 +89,7 @@ class CatExtractor(Extractor):
         """
         super().__init__(record, term, TermEnum.CAT)
 
+    @property
     def value(self):
         idx = self._term.index('[')
         x_name = self._term[0:idx]
@@ -95,9 +97,10 @@ class CatExtractor(Extractor):
         if x_name not in self._record or self._record[x_name] is None:
             return None
 
-        lhs = self._term[idx + 1:].index('.') + 1
-        rhs = self._term[idx + 1:].index(']')
+        lhs = self._term.rindex('[') + 1
+        rhs = self._term.rindex(']')
         x_val = self._term[lhs:rhs]
+        x_val = x_val.replace('T.', '')
 
         if self._record[x_name] == x_val:
             return 1.0
@@ -119,6 +122,7 @@ class LvlExtractor(Extractor):
         """
         super().__init__(record, term, TermEnum.LVL)
 
+    @property
     def value(self):
         lhs = self._term.index('(') + 1
         rhs = self._term.index(',')
@@ -128,7 +132,7 @@ class LvlExtractor(Extractor):
             return None
 
         lhs = self._term.rindex('[') + 1
-        rhs = self._term[lhs:].rindex(']')
+        rhs = self._term.rindex(']')
         x_val = self._term[lhs:rhs]
         x_val = x_val.replace('T.', '')
 
@@ -152,6 +156,7 @@ class ConExtractor(Extractor):
         """
         super().__init__(record, term, TermEnum.CON)
 
+    @property
     def value(self):
         return self._record[self._term] if self._term in self._record else None
 
@@ -171,6 +176,7 @@ class IntExtractor(Extractor):
         """
         super().__init__(record, term, TermEnum.INT)
 
+    @property
     def value(self):
         return 1.0
 
@@ -190,6 +196,8 @@ class FunExtractor(Extractor):
         """
         super().__init__(record, term, TermEnum.FUN)
 
+    # flake8: noqa: F841
+    @property
     def value(self):
         lhs = self._term.rindex('(') + 1
         rhs = self._term.index(')')
@@ -198,6 +206,9 @@ class FunExtractor(Extractor):
         val = self._record[x_name] if x_name in self._record else None
         if pd.isna(val):
             return None
+
+        if 'np.' in expression:
+            np = importlib.import_module('numpy')
         return eval(expression)
 
 
