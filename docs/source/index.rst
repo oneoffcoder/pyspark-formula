@@ -14,13 +14,16 @@
    :web_author: Jee Vang, Ph.D.
    :revisit-after: 1 days
 
-.. PySpark Formula documentation master file, created by
+.. ydot documentation master file, created by
    sphinx-quickstart on Sun Dec  6 17:42:42 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
 ydot
 ====
+
+.. image:: _static/images/logo.png
+   :alt: ydot logo.
 
 ``ydot`` is a Python API to produce PySpark dataframe models from R-like formula expressions. This project is based on `patsy <https://patsy.readthedocs.io/en/latest/index.html>`_ :cite:`2020:patsy`. As a quickstart, let's say you have a Spark dataframe with data as follows.
 
@@ -89,7 +92,7 @@ Indices and tables
 About
 =====
 
-.. image:: _static/images/logo.png
+.. image:: _static/images/ooc-logo.png
    :alt: One-Off Coder logo.
 
 One-Off Coder is an educational, service and product company. Please visit us online to discover how we may help you achieve life-long success in your personal coding career or with your company's business goals and objectives.
