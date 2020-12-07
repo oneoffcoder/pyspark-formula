@@ -1,4 +1,5 @@
 from itertools import product
+
 import pandas as pd
 from patsy.highlevel import dmatrices
 
