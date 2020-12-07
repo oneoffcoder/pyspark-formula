@@ -1,5 +1,7 @@
 # ydot
 
+[![Join the chat at https://gitter.im/dataflava/ydot](https://badges.gitter.im/dataflava/ydot.svg)](https://gitter.im/dataflava/ydot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 R-like formulas for Spark Dataframes.
 
 - [Documentation](https://ydot.readthedocs.io/)
