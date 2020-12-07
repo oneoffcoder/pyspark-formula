@@ -128,7 +128,11 @@ class SparkTest(PySparkTest):
         """
         formula = "y ~ x1 + x2 + C(a,levels=profile['a']) + C(b, levels=profile['b'])"
         sdf = self._get_sdf()
-        profile = {'b': ['mid', 'low', 'high'], 'a': ['right', 'left'], 'x1': [1.0], 'x2': [1.0], 'y': [1.0]}
+        profile = {'b': ['mid', 'low', 'high'],
+                   'a': ['right', 'left'],
+                   'x1': [1.0],
+                   'x2': [1.0],
+                   'y': [1.0]}
 
         y_observed, X_observed = get_columns(formula, sdf, profile=profile)
 
@@ -176,3 +180,68 @@ class SparkTest(PySparkTest):
 
         for x in X_observed:
             assert x in X_expected
+
+    def test_get_columns_variety(self):
+        f1 = "y ~ x1 + x2 + C(a,levels=profile['a']) + C(b, levels=profile['b'])"
+        f2 = "y ~ (x1 + x2 + C(a,levels=profile['a']) + C(b, levels=profile['b']))**2"
+        f3 = "y ~ x1:x2 + C(a,levels=profile['a']):C(b, levels=profile['b'])"
+        f4 = "y ~ x1*x2 + C(a,levels=profile['a'])*C(b, levels=profile['b'])"
+        f5 = "y ~ x1 + x2 + C(a,levels=profile['a']) + C(b, levels=profile['b']) - 1"
+        f6 = "y ~ (x1 + x2) / (C(a,levels=profile['a']) + C(b, levels=profile['b']))"
+
+        formulas = [f1, f2, f3, f4, f5, f6]
+
+        sdf = self._get_sdf()
+        profile = {'b': ['low', 'mid', 'high'],
+                   'a': ['left', 'right'],
+                   'x1': [1.0],
+                   'x2': [1.0],
+                   'y': [1.0]}
+
+        y_expecteds = [
+            ['y'],
+            ['y'],
+            ['y'],
+            ['y'],
+            ['y'],
+            ['y']
+        ]
+        X_expecteds = [
+            ['Intercept', "C(a, levels=profile['a'])[T.right]", "C(b, levels=profile['b'])[T.mid]",
+             "C(b, levels=profile['b'])[T.high]", 'x1', 'x2'],
+            ['Intercept', "C(a, levels=profile['a'])[T.right]", "C(b, levels=profile['b'])[T.mid]",
+             "C(b, levels=profile['b'])[T.high]", "C(a, levels=profile['a'])[T.right]:C(b, levels=profile['b'])[T.mid]",
+             "C(a, levels=profile['a'])[T.right]:C(b, levels=profile['b'])[T.high]", 'x1',
+             "x1:C(a, levels=profile['a'])[T.right]", "x1:C(b, levels=profile['b'])[T.mid]",
+             "x1:C(b, levels=profile['b'])[T.high]", 'x2', "x2:C(a, levels=profile['a'])[T.right]",
+             "x2:C(b, levels=profile['b'])[T.mid]", "x2:C(b, levels=profile['b'])[T.high]", 'x1:x2'],
+            ['Intercept', "C(b, levels=profile['b'])[T.mid]", "C(b, levels=profile['b'])[T.high]",
+             "C(a, levels=profile['a'])[T.right]:C(b, levels=profile['b'])[low]",
+             "C(a, levels=profile['a'])[T.right]:C(b, levels=profile['b'])[mid]",
+             "C(a, levels=profile['a'])[T.right]:C(b, levels=profile['b'])[high]", 'x1:x2'],
+            ['Intercept', "C(a, levels=profile['a'])[T.right]", "C(b, levels=profile['b'])[T.mid]",
+             "C(b, levels=profile['b'])[T.high]", "C(a, levels=profile['a'])[T.right]:C(b, levels=profile['b'])[T.mid]",
+             "C(a, levels=profile['a'])[T.right]:C(b, levels=profile['b'])[T.high]", 'x1', 'x2', 'x1:x2'],
+            ["C(a, levels=profile['a'])[left]", "C(a, levels=profile['a'])[right]", "C(b, levels=profile['b'])[T.mid]",
+             "C(b, levels=profile['b'])[T.high]", 'x1', 'x2'],
+            ['Intercept', 'x1', 'x2', "x1:x2:C(a, levels=profile['a'])[left]", "x1:x2:C(a, levels=profile['a'])[right]",
+             "x1:x2:C(b, levels=profile['b'])[T.mid]", "x1:x2:C(b, levels=profile['b'])[T.high]"]
+        ]
+
+        for i, formula in enumerate(formulas):
+            y_observed, X_observed = get_columns(formula, sdf, profile=profile)
+            y_expected, X_expected = y_expecteds[i], X_expecteds[i]
+
+            # print(f'{i}: {formula}')
+            # print(y_observed)
+            # print(X_observed)
+            # print('-' * 15)
+
+            assert len(y_observed) == len(y_expected)
+            assert len(X_observed) == len(X_expected)
+
+            for y in y_observed:
+                assert y in y_expected
+
+            for x in X_observed:
+                assert x in X_expected
