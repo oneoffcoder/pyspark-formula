@@ -64,6 +64,7 @@ def __smatrices(columns, sdf):
     :param sdf: Spark dataframe.
     :return: Spark dataframe.
     """
+
     def to_record(record):
         return Row(**{term: InteractionExtractor(record, term).value for term in columns})
 
