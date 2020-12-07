@@ -22,12 +22,53 @@
 PySpark Formula
 ===============
 
-A Python API to produce PySpark dataframe models from R-like formula expressions.
+PySpark Formula or ``pyspf`` is a Python API to produce PySpark dataframe models from R-like formula expressions. This project is based on `patsy <https://patsy.readthedocs.io/en/latest/index.html>`_ :cite:`2020:patsy`. As a quickstart, let's say you have a Spark dataframe with data as follows.
+
+.. csv-table:: Dummy Data in a Spark Dataframe
+   :file: _code/data.csv
+   :header-rows: 1
+
+Now, let's say you want to model this dataset as follows.
+
+- ``y ~ x_1 + x_2 + a + b``
+
+Then all you have to do is use the ``smatrices()`` function.
+
+.. code-block:: python
+   :linenos:
+
+   from pyspf.spark import smatrices
+
+   formula = 'y ~ x1 + x2 + a + b'
+   y, X = smatrices(formula, sdf)
+
+Observe that ``y`` and ``X`` will be Spark dataframes as specified by the formula. Here's a more interesting example where you want a model specified up to all two-way interactions.
+
+- ``y ~ (x1 + x2 + a + b)**2``
+
+Then you could issue the code as below.
+
+.. code-block:: python
+   :linenos:
+
+   from pyspf.spark import smatrices
+
+   formula = 'y ~ (x1 + x2 + a + b)**2'
+   y, X = smatrices(formula, sdf)
+
+Your resulting ``X`` Spark dataframe will look like the following.
+
+.. csv-table:: Dummy Data Transformed by Formula
+   :file: _code/two-way-interactions.csv
+   :header-rows: 1
+
+In general, what you get with ``patsy`` is what you get with ``pyspf``, however, there are exceptions. For example, the builtin functions such as ``standardize()`` and ``center()`` available with ``patsy`` will not work against Spark dataframes. Additionally, patsy allows for custom transforms, but such transforms (or user defined functions) must be visible. For now, only numpy-based transformed are allowed against continuous variables (or numeric columns).
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents
 
+   quickstart
    zzz-bib
 
 .. toctree::
