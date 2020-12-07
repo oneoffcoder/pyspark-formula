@@ -8,6 +8,20 @@ R-like formulas for Spark Dataframes.
 - [PyPi](https://pypi.org/project/ydot/) 
 - [Gitter](https://gitter.im/dataflava/ydot)
 
+Now you have the expressive power of R-like formulas to produce design matrices for your experimental needs. This API is based off of [patsy](https://patsy.readthedocs.io/en/latest/), but for use with Apache Spark dataframes. Given a Spark dataframe, you can express your design matrices with something that resembles the following.
+
+`y ~ x1 + x2 + (x3 + a + b)**2`
+
+Here's a short and sweet example.
+
+```python
+from ydot.spark import smatrices
+
+spark_df = get_a_spark_dataframe()
+formula = 'y ~ x1 + x2 + (x3 + a + b)**2'
+y, X = smatrices(formula, spark_df)
+```
+
 # Software Copyright
 
 ```
