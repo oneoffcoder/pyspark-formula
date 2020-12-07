@@ -1,3 +1,5 @@
+![ydot logo](https://ydot.readthedocs.io/en/latest/_images/logo.png)
+
 # ydot
 
 R-like formulas for Spark Dataframes.
