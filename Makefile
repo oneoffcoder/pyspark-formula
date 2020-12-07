@@ -5,7 +5,7 @@ init:
 	pip install -r requirements.txt
 
 lint:
-	python -m flake8 ./pyspf
+	python -m flake8 ./pyspafo
 
 test: clean lint
 	nosetests tests
@@ -23,7 +23,7 @@ publish: build
 	python setup.py sdist upload -r pypi
 
 compile:
-	python -m compileall -f ./pyspf
+	python -m compileall -f ./pyspafo
 
 clean:
 	find . -type f -name '*.pyc' -delete
@@ -31,7 +31,7 @@ clean:
 	rm -fr coverage/
 	rm -fr dist/
 	rm -fr build/
-	rm -fr pyspf.egg-info/
+	rm -fr pyspafo.egg-info/
 	rm -fr jupyter/.ipynb_checkpoints/
 	rm -fr joblib_memmap/
 	rm -fr docs/build/

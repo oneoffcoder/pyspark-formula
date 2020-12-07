@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from pyspark.sql import SparkSession
 
-from pyspf.spark import smatrices
+from pyspafo.spark import smatrices
 
 random.seed(37)
 np.random.seed(37)
