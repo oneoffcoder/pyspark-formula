@@ -48,5 +48,5 @@ def get_columns(formula, sdf, profile=None):
 
 
 def smatrices(formula, sdf, profile=None):
-    columns = get_columns(formula, sdf, profile=profile)
+    # columns = get_columns(formula, sdf, profile=profile)
     raise NotImplementedError()

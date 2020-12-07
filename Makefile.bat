@@ -17,7 +17,7 @@ pip install -r requirements.txt
 goto :eof
 
 :lint
-python -m flake8 ./pyspark-formula
+python -m flake8 ./pyspf
 goto :eof
 
 :test
@@ -29,8 +29,7 @@ del /S *.pyc
 rmdir /S /Q coverage
 rmdir /S /Q dist
 rmdir /S /Q build
-rmdir /S /Q pyspark-formula.egg-info
-rmdir /S /Q pyspark-formula/pyspark-formula.egg-info
+rmdir /S /Q pyspf.egg-info
 rmdir /S /Q jupyter/.ipynb_checkpoints
 rmdir /S /Q docs/build
 rmdir /S /Q joblib_memmap

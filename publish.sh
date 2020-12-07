@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SOURCE_DIST=/code/dist/pyspark-formula-${API_VERSION}.tar.gz
+SOURCE_DIST=/code/dist/pyspf-${API_VERSION}.tar.gz
 
 buildCode() {
   echo "start the build"
