@@ -204,7 +204,7 @@ class SparkTest(PySparkTest):
                    'x2': [1.0],
                    'y': [1.0]}
 
-        y = [
+        yy = [
             ['y'],
             ['y'],
             ['y'],
@@ -212,7 +212,7 @@ class SparkTest(PySparkTest):
             ['y'],
             ['y']
         ]
-        X = [
+        XX = [
             ['Intercept', "C(a, levels=profile['a'])[T.right]", "C(b, levels=profile['b'])[T.mid]",
              "C(b, levels=profile['b'])[T.high]", 'x1', 'x2'],
             ['Intercept', "C(a, levels=profile['a'])[T.right]", "C(b, levels=profile['b'])[T.mid]",
@@ -236,7 +236,59 @@ class SparkTest(PySparkTest):
 
         for i, formula in enumerate(formulas):
             y_observed, X_observed = get_columns(formula, sdf, profile=profile)
-            y_expected, X_expected = y[i], X[i]
+            y_expected, X_expected = yy[i], XX[i]
+
+            # print(f'{i}: {formula}')
+            # print(y_observed)
+            # print(X_observed)
+            # print('-' * 15)
+
+            assert len(y_observed) == len(y_expected)
+            assert len(X_observed) == len(X_expected)
+
+            for y in y_observed:
+                assert y in y_expected
+
+            for x in X_observed:
+                assert x in X_expected
+
+    def test_get_columns_variety_no_profile(self):
+        """
+        Tests a variety of formulas without profile.
+
+        :return: None.
+        """
+        f1 = "y ~ x1 + x2 + a + b"
+        f2 = "y ~ (x1 + x2 + a + b)**2"
+        f3 = "y ~ x1:x2 + a:b"
+        f4 = "y ~ x1*x2 + a*b"
+        f5 = "y ~ x1 + x2 + a + b - 1"
+        f6 = "y ~ (x1 + x2) / (a + b)"
+
+        formulas = [f1, f2, f3, f4, f5, f6]
+
+        sdf = self._get_sdf()
+
+        yy = [
+            ['y'],
+            ['y'],
+            ['y'],
+            ['y'],
+            ['y'],
+            ['y']
+        ]
+        XX = [
+            ['Intercept', 'a[T.right]', 'b[T.low]', 'b[T.mid]', 'x1', 'x2'],
+            ['Intercept', 'a[T.right]', 'b[T.low]', 'b[T.mid]', 'a[T.right]:b[T.low]', 'a[T.right]:b[T.mid]', 'x1', 'x1:a[T.right]', 'x1:b[T.low]', 'x1:b[T.mid]', 'x2', 'x2:a[T.right]', 'x2:b[T.low]', 'x2:b[T.mid]', 'x1:x2'],
+            ['Intercept', 'b[T.low]', 'b[T.mid]', 'a[T.right]:b[high]', 'a[T.right]:b[low]', 'a[T.right]:b[mid]', 'x1:x2'],
+            ['Intercept', 'a[T.right]', 'b[T.low]', 'b[T.mid]', 'a[T.right]:b[T.low]', 'a[T.right]:b[T.mid]', 'x1', 'x2', 'x1:x2'],
+            ['a[left]', 'a[right]', 'b[T.low]', 'b[T.mid]', 'x1', 'x2'],
+            ['Intercept', 'x1', 'x2', 'x1:x2:a[left]', 'x1:x2:a[right]', 'x1:x2:b[T.low]', 'x1:x2:b[T.mid]']
+        ]
+
+        for i, formula in enumerate(formulas):
+            y_observed, X_observed = get_columns(formula, sdf)
+            y_expected, X_expected = yy[i], XX[i]
 
             # print(f'{i}: {formula}')
             # print(y_observed)
