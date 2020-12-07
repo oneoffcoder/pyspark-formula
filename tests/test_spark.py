@@ -182,6 +182,11 @@ class SparkTest(PySparkTest):
             assert x in X_expected
 
     def test_get_columns_variety(self):
+        """
+        Tests a variety of formulas.
+
+        :return: None.
+        """
         f1 = "y ~ x1 + x2 + C(a,levels=profile['a']) + C(b, levels=profile['b'])"
         f2 = "y ~ (x1 + x2 + C(a,levels=profile['a']) + C(b, levels=profile['b']))**2"
         f3 = "y ~ x1:x2 + C(a,levels=profile['a']):C(b, levels=profile['b'])"
