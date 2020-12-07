@@ -1,6 +1,9 @@
 Quickstart
 ==========
 
+Basic
+-----
+
 The best way to learn ``R``-style formula syntax with ``pyspf`` is to head on over to `patsy <https://patsy.readthedocs.io/en/latest/index.html>`_ :cite:`2020:patsy` and read the documentation. Below, we show very simple code to transform a Spark dataframe into two design matrices (these are also Spark dataframes), ``y`` and ``X``, using a formula that defines a model up to two-way interactions.
 
 .. literalinclude:: _code/demo.py
