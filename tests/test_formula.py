@@ -3,7 +3,7 @@ import random
 import numpy as np
 from nose import with_setup
 
-from pyspafo.formula import TermEnum, InteractionExtractor
+from ydot.formula import TermEnum, InteractionExtractor
 
 
 def setup():

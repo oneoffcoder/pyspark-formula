@@ -6,7 +6,7 @@ from itertools import product
 import pandas as pd
 from pyspark.sql import SparkSession
 
-from pyspafo.spark import get_profile, get_columns, smatrices
+from ydot.spark import get_profile, get_columns, smatrices
 
 
 class PySparkTest(unittest.TestCase):

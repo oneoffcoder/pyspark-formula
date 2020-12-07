@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DOCKER_FILE=Dockerfile
-DOCKER_REPO=pyspark-formula
+DOCKER_REPO=ydot
 DOCKER_TAG=local
 AAPI_VERSION=version
 APYPI_REPO=repo

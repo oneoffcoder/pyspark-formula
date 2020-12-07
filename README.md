@@ -1,10 +1,10 @@
-# PySpark Formula
+# ydot
 
 R-like formulas for Spark Dataframes.
 
-- [Documentation](https://pyspafo.readthedocs.io/)
-- [PyPi](https://pypi.org/project/pyspafo/) 
-- [Gitter](https://gitter.im/dataflava/pyspafo)
+- [Documentation](https://ydot.readthedocs.io/)
+- [PyPi](https://pypi.org/project/ydot/) 
+- [Gitter](https://gitter.im/dataflava/ydot)
 
 # Software Copyright
 
@@ -35,8 +35,8 @@ This work is licensed under a [Creative Commons Attribution 4.0 International Li
  # Citation
 
 ```
-@misc{oneoffcoder_pyspark_formula_2020,
-title={PySpark Formula, R-like formulas for Spark Dataframes},
+@misc{oneoffcoder_ydot_2020,
+title={ydot, R-like formulas for Spark Dataframes},
 url={https://github.com/oneoffcoder/pyspark-formula},
 author={Jee Vang},
 year={2020},

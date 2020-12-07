@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SOURCE_DIST=/code/dist/pyspafo-${API_VERSION}.tar.gz
+SOURCE_DIST=/code/dist/ydot-${API_VERSION}.tar.gz
 
 buildCode() {
   echo "start the build"

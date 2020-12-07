@@ -6,7 +6,7 @@ Formula
 
 The ``formula`` module contains code to extract values from a record (e.g. a Spark dataframe Record) based on the model definition.
 
-.. automodule:: pyspafo.formula
+.. automodule:: ydot.formula
     :members:
     :undoc-members:
     :show-inheritance:
@@ -17,7 +17,7 @@ Spark
 
 The ``spark`` module contains code to transform a Spark dataframe into ``design matrices`` as specified by a formula.
 
-.. automodule:: pyspafo.spark
+.. automodule:: ydot.spark
     :members:
     :undoc-members:
     :show-inheritance:

@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'PySpark Formula'
+project = 'ydot'
 copyright = '2020, One-Off Coder'
 author = 'Jee Vang, Ph.D.'
 
@@ -70,7 +70,7 @@ html_last_updated_fmt = '%b %d, %Y, %X'
 html_logo = '_static/images/logo-small.png'
 html_favicon = '_static/favicon.ico'
 html_theme_options = {
-    'canonical_url': 'https://pyspark-formula.readthedocs.io/',
+    'canonical_url': 'https://ydot.readthedocs.io/',
     'analytics_id': 'UA-150762273-1',  #  Provided by Google in your dashboard
     'logo_only': False,
     'display_version': True,

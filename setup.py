@@ -4,7 +4,7 @@ with open('README.md', 'r') as fh:
     long_desc = fh.read()
 
 setup(
-    name='pyspafo',
+    name='ydot',
     version='0.0.1',
     author='Jee Vang',
     author_email='vangjee@gmail.com',

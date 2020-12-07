@@ -5,7 +5,7 @@ import pandas as pd
 from patsy.highlevel import dmatrices
 from pyspark import Row
 
-from pyspafo.formula import InteractionExtractor
+from ydot.formula import InteractionExtractor
 
 
 def get_profile(sdf):
