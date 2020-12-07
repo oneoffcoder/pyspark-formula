@@ -279,9 +279,13 @@ class SparkTest(PySparkTest):
         ]
         XX = [
             ['Intercept', 'a[T.right]', 'b[T.low]', 'b[T.mid]', 'x1', 'x2'],
-            ['Intercept', 'a[T.right]', 'b[T.low]', 'b[T.mid]', 'a[T.right]:b[T.low]', 'a[T.right]:b[T.mid]', 'x1', 'x1:a[T.right]', 'x1:b[T.low]', 'x1:b[T.mid]', 'x2', 'x2:a[T.right]', 'x2:b[T.low]', 'x2:b[T.mid]', 'x1:x2'],
-            ['Intercept', 'b[T.low]', 'b[T.mid]', 'a[T.right]:b[high]', 'a[T.right]:b[low]', 'a[T.right]:b[mid]', 'x1:x2'],
-            ['Intercept', 'a[T.right]', 'b[T.low]', 'b[T.mid]', 'a[T.right]:b[T.low]', 'a[T.right]:b[T.mid]', 'x1', 'x2', 'x1:x2'],
+            ['Intercept', 'a[T.right]', 'b[T.low]', 'b[T.mid]', 'a[T.right]:b[T.low]', 'a[T.right]:b[T.mid]', 'x1',
+             'x1:a[T.right]', 'x1:b[T.low]', 'x1:b[T.mid]', 'x2', 'x2:a[T.right]', 'x2:b[T.low]', 'x2:b[T.mid]',
+             'x1:x2'],
+            ['Intercept', 'b[T.low]', 'b[T.mid]', 'a[T.right]:b[high]', 'a[T.right]:b[low]', 'a[T.right]:b[mid]',
+             'x1:x2'],
+            ['Intercept', 'a[T.right]', 'b[T.low]', 'b[T.mid]', 'a[T.right]:b[T.low]', 'a[T.right]:b[T.mid]', 'x1',
+             'x2', 'x1:x2'],
             ['a[left]', 'a[right]', 'b[T.low]', 'b[T.mid]', 'x1', 'x2'],
             ['Intercept', 'x1', 'x2', 'x1:x2:a[left]', 'x1:x2:a[right]', 'x1:x2:b[T.low]', 'x1:x2:b[T.mid]']
         ]
