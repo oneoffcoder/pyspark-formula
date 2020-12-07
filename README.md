@@ -47,8 +47,12 @@ Copyright 2020 One-Off Coder
 This work is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/) by [One-Off Coder](https://www.oneoffcoder.com).
 
 ![Creative Commons Attribution 4.0 International License](https://i.creativecommons.org/l/by/4.0/88x31.png "Creative Commons Attribution 4.0 International License")
-  
- # Citation
+
+# Art Copyright
+
+Copyright 2020 Daytchia Vang
+
+# Citation
 
 ```
 @misc{oneoffcoder_ydot_2020,
