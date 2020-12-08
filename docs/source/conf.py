@@ -22,7 +22,7 @@ copyright = '2020, One-Off Coder'
 author = 'Jee Vang, Ph.D.'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.5'
+release = '0.0.6'
 
 
 # -- General configuration ---------------------------------------------------
@@ -38,7 +38,8 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
     'sphinxcontrib.bibtex',
-    'sphinxcontrib.blockdiag'
+    'sphinxcontrib.blockdiag',
+    'sphinx_sitemap'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -64,6 +65,7 @@ html_static_path = ['_static']
 html_css_files = [
     'css/override.css',
 ]
+html_extra_path = ['robots.txt']
 html_show_sourcelink = False
 html_show_sphinx = False
 html_last_updated_fmt = '%b %d, %Y, %X'

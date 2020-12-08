@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ydot.readthedocs.io/sitemap.xml
