@@ -23,6 +23,7 @@ ydot
 ====
 
 .. image:: _static/images/logo.png
+   :align: center
    :alt: ydot logo.
 
 ``ydot`` is a Python API to produce PySpark dataframe models from R-like formula expressions. This project is based on `patsy <https://patsy.readthedocs.io/en/latest/index.html>`_ :cite:`2020:patsy`. As a quickstart, let's say you have a Spark dataframe with data as follows.
